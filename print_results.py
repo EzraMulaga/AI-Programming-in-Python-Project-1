@@ -42,51 +42,24 @@ def print_results(results_dic, results_stats_dic, model,
     print(f"{'Percentage of correctly classified dog breeds':<30}: {results_stats_dic.get('pct_correct_breed', 0.0):.2f}%")
     print(f"{'Percentage of correctly classified non-dogs':<30}: {results_stats_dic.get('pct_correct_notdogs', 0.0):.2f}%")
     
-    # Counters for correct classifications
-    correct_dogs = 0
-    correct_not_dogs = 0
-    correct_dog_breeds = 0
-
     # Print misclassified dogs if print_incorrect_dogs is True
-    if print_incorrect_dogs:
-        print("\nIncorrectly Classified Dogs (Dog/Not-Dog Misclassifications):")
+    if (results_stats_dic['n_correct_dogs'] + results_stats_dic['n_correct_dogs'] != results_stats_dic['n_images']) and (print_incorrect_dogs):
         for key in results_dic:
             # Pet image is a dog but classified as NOT a dog
             if results_dic[key][3] == 1 and results_dic[key][4] == 0:
                 print(f"Pet label: {results_dic[key][0]:<20} | Classifier label: {results_dic[key][1]}")
-            # Pet image is NOT a dog but classified as a dog
+             # Pet image is NOT a dog but classified as a dog
             elif results_dic[key][3] == 0 and results_dic[key][4] == 1:
                 print(f"Pet label: {results_dic[key][0]:<20} | Classifier label: {results_dic[key][1]}")
-            
-            # Counting correct classifications
-            if results_dic[key][3] == 1 and results_dic[key][4] == 1:
-                correct_dogs += 1  # Correctly classified as a dog
-                # Check if the breed also matches
-                if results_dic[key][2] == 1:
-                    correct_dog_breeds += 1
-            elif results_dic[key][3] == 0 and results_dic[key][4] == 0:
-                correct_not_dogs += 1  # Correctly classified as not a dog
-
-        # Total number of images
-        total_images = len(results_dic)
-
-        # Check if correct classifications match the total images
-        if (correct_dogs + correct_not_dogs) != total_images:
-            print("\nWarning: The number of correctly classified dogs and not-dogs does not match the total number of images.")
-            print(f"Correctly classified dogs: {correct_dogs}")
-            print(f"Correctly classified not-dogs: {correct_not_dogs}")
-            print(f"Total images: {total_images}")
 
     # Check and print misclassified breeds if print_incorrect_breed is True
-    if print_incorrect_breed and correct_dogs != correct_dog_breeds:
+    
+    
+    # Only proceed if print_incorrect_breed is True and there are breed misclassifications
+    if print_incorrect_breed and (results_stats_dic['n_correct_breed'] != results_stats_dic['n_correct_dogs']):
         print("\nIncorrectly Classified Dog Breeds (Dog but Incorrect Breed):")
+    
         for key in results_dic:
-            # Pet image is a dog and classified as a dog, but breeds do not match
+            # Pet image is a dog, classified as a dog, but breeds do not match
             if results_dic[key][3] == 1 and results_dic[key][4] == 1 and results_dic[key][2] == 0:
                 print(f"Pet label: {results_dic[key][0]:<20} | Classifier label: {results_dic[key][1]}")
-
-        # Print a summary of correct and incorrect breed classifications
-        print(f"\nSummary of Dog Breed Classifications:")
-        print(f"Correctly Classified Dogs: {correct_dogs}")
-        print(f"Correct Dog Breeds: {correct_dog_breeds}")
-        print(f"Incorrect Dog Breeds: {correct_dogs - correct_dog_breeds}")
