@@ -25,6 +25,9 @@
 # Imports python modules
 from time import time
 
+# import check modules
+from print_functions_for_lab_checks import *
+
 # Imports functions created for this program
 from get_input_args import get_input_args
 from get_pet_labels import get_pet_labels
