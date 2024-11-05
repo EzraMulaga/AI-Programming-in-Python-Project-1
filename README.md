@@ -57,5 +57,5 @@ Thanks for checking out my project!
 
 ## Badge 🎖️
 
-![Project Completed Badge](link_to_badge_image)
+![Project Completed Badge](p1-completed-aws-winter.webp)
 
